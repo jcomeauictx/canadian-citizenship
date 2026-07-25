@@ -7,7 +7,7 @@ APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES = $(wildcard page*.pdf)
 all: $(PAGES:.pdf=.ps) testpage0001.pdf
 testpage%.pdf: test.ps page%.ps
-	./$+
+	./$< -sOutputFile=$@ -- $(word 1, $+)
 page%.ps: page%.pdf
 	pdftops $<
 page0001.pdf: $(APPLICATION)

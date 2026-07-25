@@ -1,1 +1,9 @@
 #!/usr/local/casperscript/bin/ccs -S -dNOPAUSE -dBATCH -sDEVICE=pdfwrite
+/Helvetica 12 selectfont
+/showpage /showpage.orig alias
+/showpage {
+	100 100 moveto
+	(dis iz a test) show
+	showpage.orig
+} bind def
+(page0001.ps) run
