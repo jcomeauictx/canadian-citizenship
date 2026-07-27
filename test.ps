@@ -1,5 +1,6 @@
 /fontsize 10 def
-/testline (012345678901234567890123456789012345678901234567890123456789) def
+/linespace 14.4 def
+/testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
 (copying showpage to showpage.orig) =
 /showpage where {/showpage get /showpage.orig exch def} if
@@ -7,8 +8,12 @@
 /inches {72 mul} bind def
 /showpage {
 	currentpagedevice /PageSize get 1 get /pageheight exch def
-	0.375 inches pageheight fontsize 1.2 mul 6 mul sub moveto
-	60 {gsave testline show grestore 0 fontsize neg 1.2 mul rmoveto} repeat
+	0.375 inches pageheight linespace 5.5 mul sub moveto
+	60 {
+		gsave
+			 testline show testline show
+		grestore
+		0 linespace neg rmoveto} repeat
 	showpage.orig
 } bind def
 (ARGUMENTS: ) =only ARGUMENTS ===
