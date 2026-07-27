@@ -2,8 +2,10 @@
 (copying showpage to showpage.orig) =
 /showpage where {/showpage get /showpage.orig exch def} if
 (redefining showpage) =
+/inches {72 mul} bind def
 /showpage {
-	100 100 moveto
+	currentpagedevice /PageSize get 1 get /pageheight exch def
+	0.5 inches pageheight 12 sub moveto
 	(dis iz a test) show
 	showpage.orig
 } bind def
