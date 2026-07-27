@@ -1,9 +1,12 @@
-#!/usr/local/casperscript/bin/ccs -S -dNOPAUSE -dBATCH -sDEVICE=pdfwrite
 /Helvetica 12 selectfont
-/showpage /showpage.orig alias
+(copying showpage to showpage.orig) =
+/showpage where {/showpage get /showpage.orig exch def} if
+(redefining showpage) =
 /showpage {
 	100 100 moveto
 	(dis iz a test) show
 	showpage.orig
 } bind def
-(page0001.ps) run
+(ARGUMENTS: ) =only ARGUMENTS ===
+ARGUMENTS 0 get dup
+(running ) =only = run
