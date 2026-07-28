@@ -1,2 +1,4 @@
-/ZapfDingbats 10 selectfont
-100 100 moveto (4) show showpage
+/Courier 10 selectfont
+/bullet {(\267) show} bind def
+/check {gsave /ZapfDingbats 10 selectfont (4) show grestore ( ) show} bind def
+100 100 moveto check bullet showpage
