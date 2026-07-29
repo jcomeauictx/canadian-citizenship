@@ -1,4 +1,4 @@
-/linespace 7.2 def  % half of actual form input field height
+/lineheight 7.2 def  % half of actual form input field height
 /zeropad {  % number digits - string
  dup 10 exch exp cvi
  3 -1 roll add 1 index 1 add string cvs
@@ -16,7 +16,7 @@
    ( ) show line 3 zeropad show
   grestore
   /line line 1 add def
-  0 linespace neg rmoveto
+  0 lineheight neg rmoveto
  } repeat
 } bind def
 (copying showpage to showpage.orig) =
@@ -24,7 +24,7 @@
 (redefining showpage) =
 /showpage {
  currentpagedevice /PageSize get 1 get /pageheight exch def
- 0 pageheight linespace sub moveto
+ 0 pageheight lineheight sub moveto
  testfill
  showpage.orig
 } bind def
