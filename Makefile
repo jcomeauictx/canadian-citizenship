@@ -14,6 +14,7 @@ testpage%.pdf: test.ps page%.ps
 	 -sDEVICE=pdfwrite \
 	 -sOutputFile=$@ \
 	 -- $+
+testpages: $(addprefix test,$(PAGES))
 filledpage%.pdf: formfill.ps page%.ps
 	gs \
 	 -dNOSAFER \
