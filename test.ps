@@ -3,9 +3,15 @@
 /testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
 (copying showpage to showpage.orig) =
-/showpage where {/showpage get /showpage.orig exch def} if
-(redefining showpage) =
 /inches {72 mul} bind def
+/zeropad {  % number digits - string
+ dup 10 exch exp cvi
+ 3 -1 roll add 1 index 1 add string cvs
+ exch 1 exch getinterval
+} bind def
+123 3 zeropad =
+(redefining showpage) =
+/showpage where {/showpage get /showpage.orig exch def} if
 /showpage {
 	currentpagedevice /PageSize get 1 get /pageheight exch def
 	0 inches pageheight linespace sub moveto
@@ -13,7 +19,7 @@
 	120 {
 		gsave
 			testline show testline show
-			( ) show line 100 add 3 string cvs 1 2 getinterval show
+			( ) show line 3 zeropad show
 		grestore
 		/line line 1 add def
 		0 linespace neg rmoveto} repeat
