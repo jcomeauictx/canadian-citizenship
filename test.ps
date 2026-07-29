@@ -1,4 +1,3 @@
-/inches {72 mul} bind def
 /linespace 7.2 def  % half of actual form input field height
 /zeropad {  % number digits - string
  dup 10 exch exp cvi
@@ -25,7 +24,7 @@
 (redefining showpage) =
 /showpage {
  currentpagedevice /PageSize get 1 get /pageheight exch def
- 0 inches pageheight linespace sub moveto
+ 0 pageheight linespace sub moveto
  testfill
  showpage.orig
 } bind def
