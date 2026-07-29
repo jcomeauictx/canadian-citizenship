@@ -2,7 +2,10 @@
 /linespace 14.4 def
 /testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
+/showstack {(stack: ) =only count array astore ==} bind def
+showstack
 (check.ps) run
+showstack
 (copying showpage to showpage.orig) =
 /showpage where {/showpage get /showpage.orig exch def} if
 /inches {72 mul} bind def
@@ -20,11 +23,12 @@
 		0 linespace neg rmoveto} repeat
 	showpage.orig
 } bind def
-/addsuffix {  % base suffix addsuffix - base.suffix
- 2 copy length exch length add 1 add string  % make new string for result
- 2 index dup length exch 0 exch getinterval 0 exch putinterval
- pstack
+showstack
+/addsuffix {  % (base) (.suffix) addsuffix - (base.suffix)
+ 2 copy length exch length add string  % make new string for result
+ dup 0 4 index putinterval
 } bind def
+(testing) (.this) addsuffix showstack quit
 (ARGUMENTS: ) =only ARGUMENTS ===
 ARGUMENTS 0 get dup
 (running ) =only = run
