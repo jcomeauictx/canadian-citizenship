@@ -6,13 +6,10 @@
  grestore
  moveto
 } bind def
-/showstack {(stack: ) =only count array astore ==} bind def
-{ARGUMENTS} stopped {[]} if {0 get} stopped {pop ()} if (test) eq
+{ARGUMENTS} stopped {[]} if {0 get} stopped {pop pop ()} if (test) eq
  {
   /Courier 24 selectfont
   100 100 moveto check bullet showpage
-  (after showpage ) =only showstack
  }
- {((check.ps definitions loaded) ) =only showstack}
+ {((check.ps definitions loaded)) =}
  ifelse
-(check.ps end ) =only showstack
