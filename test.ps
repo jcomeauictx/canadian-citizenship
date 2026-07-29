@@ -29,7 +29,10 @@
  testfill
  showpage.orig
 } bind def
-{ARGUMENTS} stopped {[]} if {0 get} stopped {pop pop ()} if length 0 eq
- {((check.ps definitions loaded)) =}
- {showstack dup (running ) =only = run}
- ifelse
+{ARGUMENTS showstack} stopped {[]} if
+ {0 get} stopped
+  {pop pop ()} if
+   dup length 0 eq
+   {pop ((check.ps definitions loaded)) =}
+   {showstack dup (running ) =only = run}
+   ifelse
