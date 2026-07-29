@@ -2,13 +2,13 @@
 /linespace 7.2 def  % half of actual form input field height
 /testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
-(copying showpage to showpage.orig) =
 /inches {72 mul} bind def
 /zeropad {  % number digits - string
  dup 10 exch exp cvi
  3 -1 roll add 1 index 1 add string cvs
  exch 1 exch getinterval
 } bind def
+/showstack {(stack: ) =only count array astore dup == aload pop} bind def
 /testfill {
  /line 1 def
  120 {
@@ -20,14 +20,16 @@
   0 linespace neg rmoveto
  } repeat
 } bind def
-(redefining showpage) =
+(copying showpage to showpage.orig) =
 /showpage where {/showpage get /showpage.orig exch def} if
+(redefining showpage) =
 /showpage {
  currentpagedevice /PageSize get 1 get /pageheight exch def
  0 inches pageheight linespace sub moveto
  testfill
  showpage.orig
 } bind def
-(ARGUMENTS: ) =only ARGUMENTS ===
-ARGUMENTS 0 get dup
-(running ) =only = run
+{ARGUMENTS} stopped {[]} if {0 get} stopped {pop pop ()} if length 0 eq
+ {((check.ps definitions loaded)) =}
+ {showstack dup (running ) =only = run}
+ ifelse
