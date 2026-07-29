@@ -6,10 +6,10 @@
 /showpage where {/showpage get /showpage.orig exch def} if
 (redefining showpage) =
 /inches {72 mul} bind def
-/line 1 def
 /showpage {
 	currentpagedevice /PageSize get 1 get /pageheight exch def
 	0.375 inches pageheight linespace 5.5 mul sub moveto
+	/line 1 def
 	60 {
 		gsave
 			testline show testline show

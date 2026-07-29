@@ -9,11 +9,17 @@ showstack
 (copying showpage to showpage.orig) =
 /showpage where {/showpage get /showpage.orig exch def} if
 /inches {72 mul} bind def
-/line 1 def
+/addsuffix {  % (base) (.suffix) addsuffix - (base.suffix)
+ 2 copy length exch length add string  % make new string for result
+ dup 0 4 index putinterval
+ dup 4 -1 roll length 4 -1 roll putinterval
+} bind def
+%(testing) (.this) addsuffix showstack quit
 (redefining showpage) =
 /showpage {
 	currentpagedevice /PageSize get 1 get /pageheight exch def
 	0.375 pageheight linespace sub moveto
+	/line 1 def
 	60 {
 		gsave
 			testline show testline show
@@ -24,12 +30,6 @@ showstack
 	showpage.orig
 } bind def
 showstack
-/addsuffix {  % (base) (.suffix) addsuffix - (base.suffix)
- 2 copy length exch length add string  % make new string for result
- dup 0 4 index putinterval
- dup 4 -1 roll length 4 -1 roll putinterval
-} bind def
-(testing) (.this) addsuffix showstack quit
 (ARGUMENTS: ) =only ARGUMENTS ===
 ARGUMENTS 0 get dup
 (running ) =only = run

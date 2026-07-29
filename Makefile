@@ -28,3 +28,5 @@ page0001.pdf: $(APPLICATION)
 	pdfseparate $< page%04d.pdf
 $(APPLICATION):
 	xdg-open $(APPLY)
+clean:
+	rm -f filledpage*
