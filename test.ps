@@ -1,5 +1,5 @@
 /fontsize 10 def
-/linespace 14.4 def
+/linespace 7.2 def  % half of actual form input field height
 /testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
 (copying showpage to showpage.orig) =
@@ -8,9 +8,9 @@
 /inches {72 mul} bind def
 /showpage {
 	currentpagedevice /PageSize get 1 get /pageheight exch def
-	0.375 inches pageheight linespace 5.5 mul sub moveto
+	0 inches pageheight linespace sub moveto
 	/line 1 def
-	60 {
+	120 {
 		gsave
 			testline show testline show
 			( ) show line 100 add 3 string cvs 1 2 getinterval show
