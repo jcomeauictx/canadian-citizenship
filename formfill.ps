@@ -23,10 +23,11 @@ showstack
  currentpagedevice /PageSize get 1 get /pageheight exch def
  0 pageheight lineheight sub moveto
  {
-  dup token % gets column number
+  dup token % gets row number
   {
-   1 index token pop  % row number
-   neg lineheight mul 0 exch moveto  % start of line
+   1 index token pop  % column number
+   exch lineheight mul pageheight exch sub 0 exch  % start of line
+   (moving to page height ) =only dup 10 string cvs = moveto
    dup (advancing ) =only 3 string cvs =only ( spaces) =
    {( ) show} repeat  % space to where text goes
    dup token pop typeshow}
