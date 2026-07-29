@@ -9,21 +9,24 @@
  3 -1 roll add 1 index 1 add string cvs
  exch 1 exch getinterval
 } bind def
-123 3 zeropad =
+/testfill {
+ /line 1 def
+ 120 {
+  gsave
+   testline show testline show
+   ( ) show line 3 zeropad show
+  grestore
+  /line line 1 add def
+  0 linespace neg rmoveto
+ } repeat
+} bind def
 (redefining showpage) =
 /showpage where {/showpage get /showpage.orig exch def} if
 /showpage {
-	currentpagedevice /PageSize get 1 get /pageheight exch def
-	0 inches pageheight linespace sub moveto
-	/line 1 def
-	120 {
-		gsave
-			testline show testline show
-			( ) show line 3 zeropad show
-		grestore
-		/line line 1 add def
-		0 linespace neg rmoveto} repeat
-	showpage.orig
+ currentpagedevice /PageSize get 1 get /pageheight exch def
+ 0 inches pageheight linespace sub moveto
+ testfill
+ showpage.orig
 } bind def
 (ARGUMENTS: ) =only ARGUMENTS ===
 ARGUMENTS 0 get dup
