@@ -1,4 +1,4 @@
-/linespace 7.2 def  % half of actual input box height
+/lineheight 7.2 def  % half of actual input box height
 /showstack {(stack: ) =only count array astore dup == aload pop} bind def
 (check.ps) run
 showstack
@@ -12,12 +12,23 @@ showstack
 } bind def
 %(testing) (.this) addsuffix showstack quit
 (redefining showpage) =
+/typeshow {dup type /stringtype eq {show} {exec} ifelse} bind def
 /showpage {
  showstack
  /fontsize 10 def
  /Courier fontsize selectfont
  currentpagedevice /PageSize get 1 get /pageheight exch def
- 0 pageheight linespace sub moveto
+ 0 pageheight lineheight sub moveto
+ {
+  dup token % gets column number
+  {
+   1 index token pop  % row number
+   neg lineheight mul 0 exch moveto  % start of line
+   {( ) show} repeat  % space to where text goes
+   dup token pop typeshow}
+  {pop exit}
+  ifelse
+ } loop
  showpage.orig
 } bind def
 {ARGUMENTS showstack} stopped {[]} if
