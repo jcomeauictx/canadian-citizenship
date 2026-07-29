@@ -40,7 +40,7 @@ showstack
   {pop (must specify input file) = quit}
   {
    dup (.txt) addsuffix
-   {(r) file} stopped {(/dev/null) (r) file} if
+   {(r) file} stopped {pop pop (/dev/null) (r) file} if
    exch dup (running ) =only = run
   }
   ifelse
