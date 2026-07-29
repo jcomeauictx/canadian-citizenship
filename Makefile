@@ -5,8 +5,16 @@ APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
 DOWNLOADS := $(HOME)/Downloads
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES = $(wildcard page*.pdf)
-all: page0001.pdf $(PAGES:.pdf=.ps) $(addprefix test,$(PAGES))
+all: page0001.pdf $(PAGES:.pdf=.ps) $(addprefix filled,$(PAGES))
 testpage%.pdf: test.ps page%.ps
+	gs \
+	 -dNOSAFER \
+	 -dBATCH \
+	 -dNOPAUSE \
+	 -sDEVICE=pdfwrite \
+	 -sOutputFile=$@ \
+	 -- $+
+filledpage%.pdf: formfill.ps page%.ps
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \

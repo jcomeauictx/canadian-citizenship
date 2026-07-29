@@ -1,4 +1,19 @@
-/Courier 10 selectfont
+(defining bullet) =
 /bullet {(\267) show} bind def
-/check {gsave /ZapfDingbats 10 selectfont (4) show grestore ( ) show} bind def
-100 100 moveto check bullet showpage
+(defining check) =
+/check {
+ gsave 
+ /ZapfDingbats 10 selectfont
+ (4) show currentpoint
+ grestore
+ moveto
+} bind def
+(definitions completed) =
+/ARGUMENTS where
+ {
+  pop  % discard dict returned by `where`
+  /Courier 10 selectfont
+  100 100 moveto check bullet showpage
+ }
+ {((check.ps not called with args)) =}
+ ifelse
