@@ -1,5 +1,5 @@
 /fontsize 10 def
-/linespace 14.4 def
+/linespace 7.2 def  % half of actual input box height
 /testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
 /showstack {(stack: ) =only count array astore ==} bind def
@@ -17,8 +17,9 @@ showstack
 %(testing) (.this) addsuffix showstack quit
 (redefining showpage) =
 /showpage {
+	showstack
 	currentpagedevice /PageSize get 1 get /pageheight exch def
-	0.375 pageheight linespace sub moveto
+	0 pageheight linespace sub moveto
 	/line 1 def
 	60 {
 		gsave
@@ -32,4 +33,6 @@ showstack
 showstack
 (ARGUMENTS: ) =only ARGUMENTS ===
 ARGUMENTS 0 get dup
-(running ) =only = run
+(.txt) addsuffix {(r) file} stopped {pop pop} {exch} ifelse
+(before running ) =only showstack
+run
