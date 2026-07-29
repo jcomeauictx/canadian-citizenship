@@ -5,9 +5,9 @@
 (check.ps) run
 (copying showpage to showpage.orig) =
 /showpage where {/showpage get /showpage.orig exch def} if
-(redefining showpage) =
 /inches {72 mul} bind def
 /line 1 def
+(redefining showpage) =
 /showpage {
 	currentpagedevice /PageSize get 1 get /pageheight exch def
 	0.375 pageheight linespace sub moveto
@@ -19,6 +19,11 @@
 		/line line 1 add def
 		0 linespace neg rmoveto} repeat
 	showpage.orig
+} bind def
+/addsuffix {  % base suffix addsuffix - base.suffix
+ 2 copy length exch length add 1 add string  % make new string for result
+ 2 index dup length exch 0 exch getinterval 0 exch putinterval
+ pstack
 } bind def
 (ARGUMENTS: ) =only ARGUMENTS ===
 ARGUMENTS 0 get dup
