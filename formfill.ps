@@ -12,7 +12,10 @@ showstack
 } bind def
 %(testing) (.this) addsuffix showstack quit
 (redefining showpage) =
-/typeshow {dup type /stringtype eq {show} {exec} ifelse} bind def
+/typeshow {
+ (displaying: ) =only dup =
+ dup type /stringtype eq {show} {exec} ifelse
+} bind def
 /showpage {
  showstack
  /fontsize 10 def
@@ -24,6 +27,7 @@ showstack
   {
    1 index token pop  % row number
    neg lineheight mul 0 exch moveto  % start of line
+   dup (advancing ) =only 3 string cvs =only ( spaces) =
    {( ) show} repeat  % space to where text goes
    dup token pop typeshow}
   {pop exit}
@@ -34,5 +38,9 @@ showstack
 {ARGUMENTS showstack} stopped {[]} if
  {0 get} stopped
   {pop (must specify input file) = quit}
-  {dup (.txt) addsuffix (r) file exch dup (running ) =only = run}
+  {
+   dup (.txt) addsuffix
+   {(r) file} stopped {(/dev/null) (r) file} if
+   exch dup (running ) =only = run
+  }
   ifelse
