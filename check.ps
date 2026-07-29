@@ -1,6 +1,4 @@
-(defining bullet) =
 /bullet {(\267) show} bind def
-(defining check) =
 /check {
  gsave 
  /ZapfDingbats 10 selectfont
@@ -8,12 +6,10 @@
  grestore
  moveto
 } bind def
-(definitions completed) =
-/ARGUMENTS where
+{ARGUMENTS dup == 0 get} stopped {()} if pstack (test) eq
  {
-  pop  % discard dict returned by `where`
   /Courier 10 selectfont
   100 100 moveto check bullet showpage
  }
- {((check.ps not called with args)) =}
+ {((check.ps definitions loaded)) =}
  ifelse
