@@ -1,8 +1,5 @@
-/fontsize 10 def
-/linespace 7.2 def  % half of actual form input field height
-/testline (0123456789012345678901234567890123456789) def
-/Courier fontsize selectfont
 /inches {72 mul} bind def
+/linespace 7.2 def  % half of actual form input field height
 /zeropad {  % number digits - string
  dup 10 exch exp cvi
  3 -1 roll add 1 index 1 add string cvs
@@ -10,6 +7,9 @@
 } bind def
 /showstack {(stack: ) =only count array astore dup == aload pop} bind def
 /testfill {
+ /testline (0123456789012345678901234567890123456789) def
+ /fontsize 10 def
+ /Courier fontsize selectfont
  /line 1 def
  120 {
   gsave
