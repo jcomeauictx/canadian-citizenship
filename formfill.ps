@@ -1,7 +1,4 @@
-/fontsize 10 def
 /linespace 7.2 def  % half of actual input box height
-/testline (0123456789012345678901234567890123456789) def
-/Courier fontsize selectfont
 /showstack {(stack: ) =only count array astore dup == aload pop} bind def
 (check.ps) run
 showstack
@@ -16,18 +13,11 @@ showstack
 %(testing) (.this) addsuffix showstack quit
 (redefining showpage) =
 /showpage {
-	showstack
-	currentpagedevice /PageSize get 1 get /pageheight exch def
-	0 pageheight linespace sub moveto
-	/line 1 def
-	60 {
-		gsave
-			testline show testline show
-			( ) show line 100 add 3 string cvs 1 2 getinterval show
-		grestore
-		/line line 1 add def
-		0 linespace neg rmoveto} repeat
-	showpage.orig
+ /fontsize 10 def
+ /Courier fontsize selectfont
+ currentpagedevice /PageSize get 1 get /pageheight exch def
+ 0 pageheight linespace sub moveto
+ showpage.orig
 } bind def
 showstack
 (ARGUMENTS: ) =only ARGUMENTS ===
