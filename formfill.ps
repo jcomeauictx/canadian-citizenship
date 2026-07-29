@@ -2,10 +2,7 @@
 /linespace 7.2 def  % half of actual input box height
 /testline (0123456789012345678901234567890123456789) def
 /Courier fontsize selectfont
-/showstack {
- (stack: ) =only count array astore dup == aload pop
-} bind def
-showstack
+/showstack {(stack: ) =only count array astore dup == aload pop} bind def
 (check.ps) run
 showstack
 (copying showpage to showpage.orig) =
