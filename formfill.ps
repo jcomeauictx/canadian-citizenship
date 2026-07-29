@@ -27,6 +27,7 @@ showstack
 /addsuffix {  % (base) (.suffix) addsuffix - (base.suffix)
  2 copy length exch length add string  % make new string for result
  dup 0 4 index putinterval
+ dup 4 -1 roll length 4 -1 roll putinterval
 } bind def
 (testing) (.this) addsuffix showstack quit
 (ARGUMENTS: ) =only ARGUMENTS ===
