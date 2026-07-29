@@ -13,15 +13,15 @@ showstack
 %(testing) (.this) addsuffix showstack quit
 (redefining showpage) =
 /showpage {
+ showstack
  /fontsize 10 def
  /Courier fontsize selectfont
  currentpagedevice /PageSize get 1 get /pageheight exch def
  0 pageheight linespace sub moveto
  showpage.orig
 } bind def
-showstack
-(ARGUMENTS: ) =only ARGUMENTS ===
-ARGUMENTS 0 get dup
-(.txt) addsuffix {(r) file} stopped {pop pop} {exch} ifelse
-(before running ) =only showstack
-run
+{ARGUMENTS showstack} stopped {[]} if
+ {0 get} stopped
+  {pop (must specify input file) = quit}
+  {dup (.txt) addsuffix (r) file exch dup (running ) =only = run}
+  ifelse
