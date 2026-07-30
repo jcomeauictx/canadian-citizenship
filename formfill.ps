@@ -28,7 +28,7 @@ showstack
    1 index token pop  % column number
    exch lineheight mul pageheight exch sub 0 exch  % start of line
    (moving to page height ) =only dup 10 string cvs = moveto
-   dup (advancing ) =only 3 string cvs =only ( spaces) =
+   dup (advancing ) =only 10 string cvs =only ( spaces) =
    spacewidth mul 0 rmoveto  % space to where text goes
    dup token pop typeshow}
   {pop exit}
