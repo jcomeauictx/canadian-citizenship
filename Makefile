@@ -5,7 +5,10 @@ APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
 DOWNLOADS := $(HOME)/Downloads
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES = $(wildcard page*.pdf)
-all: page0001.pdf $(PAGES:.pdf=.ps) $(addprefix filled,$(PAGES))
+all: page0001.pdf $(PAGES:.pdf=.ps) filledform.pdf
+filledform.pdf: filledpages
+	pdfunite filledpage*.pdf $@
+filledpages: $(addprefix filled, $(PAGES))
 testpage%.pdf: test.ps page%.ps
 	gs \
 	 -dNOSAFER \
