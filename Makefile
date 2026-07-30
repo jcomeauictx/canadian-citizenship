@@ -41,5 +41,6 @@ prefilled0001.pdf: $(PREVIOUS)
 $(APPLICATION):
 	xdg-open $(APPLY)
 clean:
-	rm -f filledpage0*.pdf prefilled0*.* 
-	rm -f page0*.ps page0*.pdf testpage0*.pdf
+	rm -f filledpage0*.pdf
+distclean: clean
+	rm -f page0*.ps page0*.pdf testpage0*.pdf prefilled0*.*
