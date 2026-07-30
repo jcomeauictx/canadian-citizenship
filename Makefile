@@ -44,3 +44,4 @@ clean:
 	rm -f filledpage0*.pdf
 distclean: clean
 	rm -f page0*.ps page0*.pdf testpage0*.pdf prefilled0*.*
+	rm -f filledform.pdf
