@@ -1,3 +1,4 @@
 38 4.5 check  % never had certificate and born outside Canada
 40.5 4.5 check  % think I am Canadian
 43 4.3 bullet  % Yes, proceed
+58 19 bullet  % English

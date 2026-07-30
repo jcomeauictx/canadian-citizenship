@@ -7,7 +7,9 @@ APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES = $(wildcard page*.pdf)
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
 PREFILLED = $(wildcard prefilled*.pdf)
-all: page0001.pdf $(PAGES:.pdf=.ps) filledform.pdf
+all: page0001.pdf $(PAGES:.pdf=.ps) result
+result: filledform.pdf
+	xpdf $<
 filledform.pdf: filledpages
 	pdfunite filledpage*.pdf $@
 filledpages: $(addprefix filled, $(PAGES))
@@ -39,4 +41,5 @@ prefilled0001.pdf: $(PREVIOUS)
 $(APPLICATION):
 	xdg-open $(APPLY)
 clean:
-	rm -f filledpage*
+	rm -f filledpage0*.pdf prefilled0*.* 
+	rm -f page0*.ps page0*.pdf testpage0*.pdf
