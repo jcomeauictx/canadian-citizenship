@@ -19,6 +19,7 @@ showstack
  showstack
  /fontsize 10 def
  /Courier fontsize selectfont
+ /spacewidth ( ) stringwidth pop def
  currentpagedevice /PageSize get 1 get /pageheight exch def
  0 pageheight lineheight sub moveto
  {
@@ -28,7 +29,7 @@ showstack
    exch lineheight mul pageheight exch sub 0 exch  % start of line
    (moving to page height ) =only dup 10 string cvs = moveto
    dup (advancing ) =only 3 string cvs =only ( spaces) =
-   {( ) show} repeat  % space to where text goes
+   spacewidth mul 0 rmoveto  % space to where text goes
    dup token pop typeshow}
   {pop exit}
   ifelse
