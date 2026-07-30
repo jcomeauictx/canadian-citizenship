@@ -5,11 +5,13 @@ APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
 DOWNLOADS := $(HOME)/Downloads
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES = $(wildcard page*.pdf)
+PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
+PREFILLED = $(wildcard prefilled*.pdf)
 all: page0001.pdf $(PAGES:.pdf=.ps) filledform.pdf
 filledform.pdf: filledpages
 	pdfunite filledpage*.pdf $@
 filledpages: $(addprefix filled, $(PAGES))
-testpage%.pdf: test.ps page%.ps
+testpage%.pdf: test.ps prefilled%.ps
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \
@@ -17,7 +19,7 @@ testpage%.pdf: test.ps page%.ps
 	 -sDEVICE=pdfwrite \
 	 -sOutputFile=$@ \
 	 -- $+
-testpages: $(addprefix test,$(PAGES))
+testpages: $(addprefix test, $(PAGES))
 filledpage%.pdf: formfill.ps page%.ps
 	gs \
 	 -dNOSAFER \
@@ -28,8 +30,12 @@ filledpage%.pdf: formfill.ps page%.ps
 	 -- $+
 page%.ps: page%.pdf
 	pdftops $<
+prefilled%.ps: prefilled%.pdf
+	pdftops $<
 page0001.pdf: $(APPLICATION)
 	pdfseparate $< page%04d.pdf
+prefilled0001.pdf: $(PREVIOUS)
+	pdfseparate $< prefilled%04d.pdf
 $(APPLICATION):
 	xdg-open $(APPLY)
 clean:
