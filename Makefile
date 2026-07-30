@@ -7,7 +7,7 @@ APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES = $(wildcard page*.pdf)
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
 PREFILLED = $(wildcard prefilled*.pdf)
-all: page0001.pdf $(PAGES:.pdf=.ps) result
+all: page0001.pdf filledpages result
 result: filledform.pdf
 	xpdf $<
 filledform.pdf: filledpages
