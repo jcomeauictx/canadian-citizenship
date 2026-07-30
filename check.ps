@@ -1,4 +1,10 @@
-/bullet {gsave currentfont 1.6 scalefont setfont (\267) show grestore} bind def
+/bullet {
+ gsave
+ /Symbol 10 selectfont
+ (\267) show currentpoint
+ grestore
+ moveto
+} bind def
 /check {
  gsave 
  /ZapfDingbats 10 selectfont
