@@ -11,7 +11,7 @@ PREFILLED = $(shell seq -f 'prefilled%04g.pdf' 1 $(PAGES))
 ifneq ($(SHOWENV),)
 export
 endif
-all: page0001.pdf filledpages result
+all: $(FORMPAGES) filledpages result
 result: filledform.pdf
 	xpdf $<
 filledform.pdf: filledpages
