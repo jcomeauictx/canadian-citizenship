@@ -1,5 +1,6 @@
 37.8 4.5 check  % never had certificate and born outside Canada
 40.5 4.5 check  % think I am Canadian
-42.6 4.4 bullet  % Yes, proceed
-57.8 18.8 bullet  % English
-60.0 44 (NA)  % UCI if you have one, (NA) if you don't, (unknown) if you don't know what it is
+42.6 4.5 bullet  % Yes, proceed
+57.6 18.9 bullet  % English
+59.8 43.5 (NA)  % UCI if you have one, (NA) if you don't, (unknown) if you don't know what it is
+65.6 48.9 bullet  % No, not replacing certificate
