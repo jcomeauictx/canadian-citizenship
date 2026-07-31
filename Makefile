@@ -26,7 +26,7 @@ testpage%.pdf: test.ps prefilled%.ps
 	 -sOutputFile=$@ \
 	 -- $+
 testpages: $(addprefix test, $(FORMPAGES))
-filledpage%.pdf: formfill.ps page%.ps
+filledpage%.pdf: formfill.ps page%.ps $(wildcard page%.ps.txt)
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \
