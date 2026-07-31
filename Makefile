@@ -6,8 +6,8 @@ DOWNLOADS := $(HOME)/Downloads
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES := $(shell pdfinfo $(APPLICATION) | awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
-FORMPAGES = $(wildcard page0*.pdf)
-PREFILLED = $(wildcard prefilled0*.pdf)
+FORMPAGES = $(shell seq -f 'page%04g.pdf' 1 $(PAGES))
+PREFILLED = $(shell seq -f 'prefilled%04g.pdf' 1 $(PAGES))
 ifneq ($(SHOWENV),)
 export
 endif
@@ -40,10 +40,11 @@ prefilled%.ps: prefilled%.pdf
 	pdftops $<
 page%.pdf: $(APPLICATION)
 	pdfseparate $< page%04d.pdf
-prefilled0001.pdf: $(PREVIOUS)
+prefilled%.pdf: $(PREVIOUS)
 	pdfseparate $< prefilled%04d.pdf
 $(APPLICATION):
 	xdg-open $(APPLY)
+	read -p '<ENTER> when form has been downloaded' done
 clean:
 	rm -f filledpage0*.pdf
 distclean: clean
