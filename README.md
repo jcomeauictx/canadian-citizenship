@@ -5,8 +5,6 @@ little project will allow you to save your changes in plain text files, which
 you can modify as new information comes to light, and rebuild the completed
 application form with a single `make` command.
 
-## bugs
-Starting from scratch, a browser will be launched for you to download the
-cit0001e.pdf file from the Canadian government website, but it will take two
-more `make` commands to build the completed application form, because I still
-suck at Makefiles after all these years.
+It may also serve as a useful starting point for people who are confused by
+the whole process. But maybe not, it depends on how successful I am after
+submitting it.
