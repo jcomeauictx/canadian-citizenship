@@ -15,10 +15,18 @@ showstack
  (displaying: ) =only dup =
  dup type /stringtype eq {show} {exec} ifelse
 } bind def
+/Courier findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding ISOLatin1Encoding def
+  currentdict
+end
+/Courier-Latin1 exch definefont
+showstack
 /showpage {
  showstack
  /fontsize 10 def
- /Courier fontsize selectfont
+ /Courier-Latin1 fontsize selectfont
  /spacewidth ( ) stringwidth pop def
  currentpagedevice /PageSize get 1 get /pageheight exch def
  0 pageheight lineheight sub moveto
