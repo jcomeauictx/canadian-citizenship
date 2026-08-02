@@ -1,13 +1,13 @@
-15.0 7.5 (Canux) 15.0 53.0 (Canoe)  % surnames
-19.0 7.5 (P\350re) 19.0 53.0 (M\350re)  % first names
-23.0 53.0 (M\350re Maiden)  % other names
-33.0 7.5 (United States) 33.0 36.0 (1899-01-08)  % parent 1 birth country/date
-33.0 53.0 (United States) 33.0 82.0 (1901-01-01)  % parent 2 ditto
-37.0 7.5 (NA) 37.0 53.0 (NA)  % Canadian birth certificate
-41.0 13.5 (1918-01-18) 41.0 30.0 (Border, Maine)  % parent 1 marriage date/place
-41.0 59.0 (1918-01-18) 41.0 76.5 (Border, Maine)  % parent 2 ditto
-45.1 24.5 (1970-01-01) 45.1 80.5 (1990-01-01)  % death dates
-52.9 20.6 bullet 52.9 64.5 bullet  % biological parents
-58.1 53.0 check  % parent 2 not citizen
+15.0 7.5 (Canux) 15.0 53.1 (Canoe)  % surnames
+19.0 7.5 (P\350re) 19.0 53.1 (M\350re)  % first names
+23.0 53.1 (M\350re Maiden)  % other names
+33.2 7.5 (United States) 33.2 36.0 (1899-01-08)  % parent 1 birth country/date
+33.2 53.1 (United States) 33.2 82.0 (1901-01-01)  % parent 2 ditto
+37.0 7.5 (NA) 37.0 53.1 (NA)  % Canadian birth certificate
+41.2 13.5 (1918-01-18) 41.2 30.2 (Border, Maine)  % parent 1 marriage date/place
+41.2 59.0 (1918-01-18) 41.2 76.4 (Border, Maine)  % parent 2 ditto
+45.2 24.5 (1970-01-01) 45.2 70.5 (1990-01-01)  % death dates
+52.9 20.7 bullet 52.9 64.5 bullet  % biological parents
+58.2 53.1 check  % parent 2 not citizen
 60.7 7.5 check  % not sure about parent 1 citizenship status
 64.0 10.0 (Born in United States to Canadian parents)
