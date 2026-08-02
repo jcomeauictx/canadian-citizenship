@@ -8,6 +8,7 @@ PAGES := $(shell pdfinfo $(APPLICATION) | awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
 FORMPAGES = $(shell seq -f 'page%04g.pdf' 1 $(PAGES))
 PREFILLED = $(shell seq -f 'prefilled%04g.pdf' 1 $(PAGES))
+PRIVATE := $(HOME)/canada
 ifneq ($(SHOWENV),)
 export
 endif
@@ -27,7 +28,8 @@ testpage%.pdf: test.ps prefilled%.ps
 	 -- $+
 testpages: $(addprefix test, $(FORMPAGES))
 .SECONDEXPANSION:
-filledpage%.pdf: formfill.ps page%.ps $$(wildcard page$$*.ps.txt)
+filledpage%.pdf: formfill.ps page%.ps \
+ $$(firstword, $$(wildcard $(PRIVATE)/page$$*.txt $$(wildcard page$$*.txt)))
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \
