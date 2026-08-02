@@ -1,0 +1,13 @@
+33.2 7.5 bullet  % paper
+41.5 7.5 (Canux)  % last name
+41.5 52 (Justus) % first names
+45.5 12.5 (1919-01-19)  % birth date
+45.5 29.0 (Border, Maine)  % birth place
+45.5 64.5 (Other)  % country of birth
+45.5 82.5 (United States)  % specify if not on list (list had only Canada)
+49.9 17.1 bullet  % Male
+49.9 59.5 (6)  % height, feet
+49.9 65.5 (0)  % height, inches
+49.9 83.5 (Black)  % eye color
+61.7 14.7 bullet  % no changes to the above requested
+86.2 14.7 bullet  % no, birth certificate was not changed or replaced
