@@ -15,14 +15,16 @@ showstack
  (displaying: ) =only dup =
  dup type /stringtype eq {show} {exec} ifelse
 } bind def
+(before creating Courier-latin1 ) =only showstack
 /Courier findfont
 dup length dict begin
-  {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
-  currentdict
+ {1 index /FID ne {def} {pop pop} ifelse} forall
+ /Encoding ISOLatin1Encoding def
+ currentdict
 end
 /Courier-Latin1 exch definefont
-showstack
+pop  % remove Courier fontdict
+(after creating Courier-latin1 ) =only showstack
 /showpage {
  showstack
  /fontsize 10 def
@@ -45,11 +47,13 @@ showstack
  showpage.orig
 } bind def
 {ARGUMENTS showstack} stopped {[]} if
- {0 get} stopped
-  {pop (must specify input file) = quit}
+ {dup 0 get} stopped
+  {pop pop (must specify input files) = quit}
   {
-   dup (.txt) addsuffix
+   {exch 1 index 1 get} stopped {pop dup (.txt) addsuffix} if
    {(r) file} stopped {pop pop (/dev/null) (r) file} if
    exch dup (running ) =only = run
   }
   ifelse
+  pop
+  (at end ) =only showstack
