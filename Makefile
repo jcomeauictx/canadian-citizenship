@@ -29,7 +29,7 @@ testpage%.pdf: test.ps prefilled%.ps
 testpages: $(addprefix test, $(FORMPAGES))
 .SECONDEXPANSION:
 filledpage%.pdf: formfill.ps page%.ps \
- $$(firstword $$(wildcard $$(PRIVATE)/page$$*.txt) page%.txt)
+ $$(firstword $$(wildcard $$(PRIVATE)/page$$*.txt page$$*.txt) /dev/null)
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \
