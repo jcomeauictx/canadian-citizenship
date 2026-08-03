@@ -3,6 +3,7 @@ IMMIGRATION := $(CANADA)/immigration-refugees-citizenship
 FORMS := $(IMMIGRATION)/services/application/application-forms-guides
 APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
 DOWNLOADS := $(HOME)/Downloads
+INSTALLED := .installed
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES := $(shell pdfinfo $(APPLICATION) | awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
@@ -59,4 +60,12 @@ ifeq ($(SHOWENV),)
 else
 	$@
 endif
+$(INSTALLED):
+	mkdir $@
+$(INSTALLED)/seq:
+	sudo $(INSTALLER) $(INSTALL) coreutils
+	touch $@
+$(INSTALLED)/poppler-utils:
+	sudo $(INSTALLER) $(INSTALL) $(&F)
+	touch $@
 .PRECIOUS: page%.pdf
