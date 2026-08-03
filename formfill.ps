@@ -47,13 +47,12 @@ pop  % remove Courier fontdict
  showpage.orig
 } bind def
 {ARGUMENTS showstack} stopped {[]} if
- {dup 0 get} stopped
-  {pop pop (must specify input files) = quit}
+ {dup 1 get} stopped
+  {(failed `1 get` ) =only showstack (must specify input files) = quit}
   {
-   {exch 1 index 1 get} stopped {pop dup (.txt) addsuffix} if
+   (after `1 get` ) =only showstack
    {(r) file} stopped {pop pop (/dev/null) (r) file} if
-   exch dup (running ) =only = run
+   exch 0 get dup (running ) =only = run
   }
   ifelse
-  pop
   (at end ) =only showstack
