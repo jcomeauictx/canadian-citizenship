@@ -1,0 +1,17 @@
+% neither parent has citizenship certificate, neither ever entered Canada
+16.0 7.6 (NA) 16.0 30.3 (NA)  16.0 53.1 (NA) 16.0 75.9 (NA)
+19.4 45.9 bullet 19.4 92.1 bullet  % neither left Canada
+34.5 45.9 bullet 34.5 91.5 bullet  % citizens of other countries
+39.5 7.4 (United States as of 1899-01-08 born in)
+39.5 53.0 (United States as of 1901-01-01 born in)
+41.0 7.4 (United States, recognized by his parents)
+41.0 53.0 (United States, recognized by her parents)
+42.5 7.4 (obtaining birth certificate in Border,)
+42.5 53.0 (obtaining birth certificate in Border,)
+44.0 7.4 (Maine. Not known to have entered Canada.)
+44.0 53.0 (Maine. Not known to have entered Canada.)
+50.5 38.7 bullet 50.5 84.3 bullet  % neither born in Canada
+56.5 38.7 bullet 56.5 84.3 bullet  % not naturalized British subjects
+62.5 38.7 bullet 62.5 84.3 bullet % not British subjects
+72.2 7.5 bullet 72.2 53.1 bullet  % NA, not born in Canada
+89.2 7.5 bullet 89.2 53.1 bullet  % ditto
