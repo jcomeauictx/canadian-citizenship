@@ -2,4 +2,6 @@ page*.pdf
 page*.ps
 filledpage*.pdf
 testpage*.pdf
+prefilled*.pdf
 filledform.pdf
+.installed
