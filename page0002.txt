@@ -1,7 +1,7 @@
 33.2 7.5 bullet  % paper
 41.5 7.5 (Canux)  % last name
 41.5 52 (Justus) % first names
-45.5 12.5 (1919-01-19)  % birth date
+45.5 12.5 (1955-01-01)  % birth date
 45.5 29.0 (Border, Maine)  % birth place
 45.5 64.5 (Other)  % country of birth
 45.5 82.5 (United States)  % specify if not on list (list had only Canada)

@@ -3,12 +3,12 @@
 20.4 62.1 bullet  % one of his parents Canadian, yes
 28.5 7.4 (Canux) 28.5 53.0 (Canux)  % parents' last names
 32.7 7.4 (Grandp\350re) 32.7 53.0 (Grandm\350re)  % parents' first names
-36.7 53.0 (Grandm\350re Canoe)  % other names
-46.6 7.4 (Canada) 46.6 30.2 (1880-01-01)  % birthplace and date
-46.6 53.0 (Canada) 46.6 75.0 (1885-01-01)  % ditto for grandmother
+36.7 53.0 (Grandm\350re Canon)  % other names
+46.6 7.4 (Canada) 46.6 30.2 (1890-01-01)  % birthplace and date
+46.6 53.0 (Canada) 46.6 75.0 (1900-01-01)  % ditto for grandmother
 52.0 7.4 (unknown) 52.0 30.2 (unknown)  % birth and citizenship numbers
 52.0 53.0 (unknown) 52.0 75.0 (unknown)  % ditto for grandmother
-56.0 7.4 (Born in St. Narcisse, Kent, NB 1880)  % grandfather
-56.0 53.0 (Born in St. Narcisse, Kent, NB 1885)  % grandmother
+56.0 7.4 (Born in St. Narcisse, Kent, NB 1890)  % grandfather
+56.0 53.0 (Born in St. Narcisse, Kent, NB 1900)  % grandmother
 57.4 7.4 (of Canadian parents) 57.4 53.0 (of Canadian parents)  % continuation
-66.2 24.5 (1930-01-01) 66.2 70.2 (1950-01-01)  % dates of death
+66.2 24.5 (1960-01-01) 66.2 70.2 (2000-01-01)  % dates of death

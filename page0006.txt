@@ -1,0 +1,5 @@
+9.3 62.1 bullet  % yes, citizen of other country besides Canada
+12.5 7.2 (United States, as of 1955-01-01 when born in Maine, United States,)
+14.0 7.2 (recognized by birth certificate)
+24.2 7.2 bullet  % not born before 1950
+52.6 7.2 bullet  % not born after December 15, 2025
