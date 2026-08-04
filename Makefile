@@ -4,11 +4,18 @@ FORMS := $(IMMIGRATION)/services/application/application-forms-guides
 APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
 DOWNLOADS := $(HOME)/Downloads
 INSTALLED := .installed
+INSTALLER := $(shell command -v apt yum dnf apk)
+INSTALL := install
+ifeq ($(INSTALLER),apk)
+INSTALL := add
+endif
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
 PAGES := $(shell pdfinfo $(APPLICATION) | awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
 FORMPAGES = $(shell seq -f 'page%04g.pdf' 1 $(PAGES))
 PREFILLED = $(shell seq -f 'prefilled%04g.pdf' 1 $(PAGES))
+FILLEDPAGES = $(addprefix filled, $(FORMPAGES))
+TESTPAGES = $(addprefix test, $(FORMPAGES))
 PRIVATE := $(HOME)/canada
 ifneq ($(SHOWENV),)
 export
@@ -17,9 +24,9 @@ all: $(FORMPAGES) filledpages result
 result: filledform.pdf
 	xpdf $<
 filledform.pdf: filledpages
-	pdfunite filledpage*.pdf $@
-filledpages: $(addprefix filled, $(FORMPAGES))
-testpage%.pdf: test.ps prefilled%.ps
+	pdfunite filledpage0*.pdf $@
+filledpages: $(INSTALLED)/seq $(FILLEDPAGES)
+testpage0%.pdf: test.ps prefilled0%.ps | $(INSTALLED)/ghostscript
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \
@@ -27,10 +34,12 @@ testpage%.pdf: test.ps prefilled%.ps
 	 -sDEVICE=pdfwrite \
 	 -sOutputFile=$@ \
 	 -- $+
-testpages: $(addprefix test, $(FORMPAGES))
+testpages.pdf: $(TESTPAGES) | $(INSTALLED)/seq $(INSTALLED)/poppler-utils
+	pdfunite $+ $@
 .SECONDEXPANSION:
-filledpage%.pdf: formfill.ps page%.ps \
- $$(firstword $$(wildcard $$(PRIVATE)/page$$*.txt page$$*.txt) /dev/null)
+filledpage0%.pdf: formfill.ps page0%.ps \
+ $$(firstword $$(wildcard $$(PRIVATE)/page$$*.txt page$$*.txt) /dev/null) | \
+ $(INSTALLED)/poppler-utils $(INSTALLED)/ghostscript
 	gs \
 	 -dNOSAFER \
 	 -dBATCH \
@@ -38,13 +47,13 @@ filledpage%.pdf: formfill.ps page%.ps \
 	 -sDEVICE=pdfwrite \
 	 -sOutputFile=$@ \
 	 -- $+
-page%.ps: page%.pdf
+page0%.ps: page0%.pdf $(INSTALLED)/poppler-utils
 	pdftops $<
-prefilled%.ps: prefilled%.pdf
+prefilled0%.ps: prefilled0%.pdf $(INSTALLED)/poppler-utils
 	pdftops $<
-page%.pdf: $(APPLICATION)
+page0%.pdf: $(APPLICATION) $(INSTALLED)/poppler-utils
 	pdfseparate $< page%04d.pdf
-prefilled%.pdf: $(PREVIOUS)
+prefilled0%.pdf: $(PREVIOUS) $(INSTALLED)/poppler-utils
 	pdfseparate $< prefilled%04d.pdf
 $(APPLICATION):
 	xdg-open $(APPLY)
@@ -60,12 +69,12 @@ ifeq ($(SHOWENV),)
 else
 	$@
 endif
-$(INSTALLED):
-	mkdir $@
-$(INSTALLED)/seq:
+$(INSTALLED)/seq: $(INSTALLED)
 	sudo $(INSTALLER) $(INSTALL) coreutils
 	touch $@
-$(INSTALLED)/poppler-utils:
-	sudo $(INSTALLER) $(INSTALL) $(&F)
+$(INSTALLED)/poppler-utils $(INSTALLED)/ghostscript: | $(INSTALLED)
+	sudo $(INSTALLER) $(INSTALL) $(@F)
 	touch $@
-.PRECIOUS: page%.pdf
+$(INSTALLED) $(PRIVATE):
+	mkdir -p $@
+.PRECIOUS: page0%.pdf
