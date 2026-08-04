@@ -15,7 +15,7 @@ showstack
  (displaying: ) =only dup =
  dup type /stringtype eq {show} {exec} ifelse
 } bind def
-(before creating Courier-latin1 ) =only showstack
+(before creating Courier-Latin1 ) =only showstack
 /Courier findfont
 dup length dict begin
  {1 index /FID ne {def} {pop pop} ifelse} forall
@@ -24,7 +24,7 @@ dup length dict begin
 end
 /Courier-Latin1 exch definefont
 pop  % remove Courier fontdict
-(after creating Courier-latin1 ) =only showstack
+(after creating Courier-Latin1 ) =only showstack
 /showpage {
  showstack
  /fontsize 10 def
