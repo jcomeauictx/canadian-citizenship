@@ -1,0 +1,18 @@
+10.1 7.4 (M\350re Canux)  % full name of parent 2
+16.7 51.9 bullet  % yes, born outside Canada
+19.2 63.9 bullet  % yes, one of her parents Canadian
+27.5 7.4 (Canis) 27.5 53.0 (Canis)  % surnames of grandparents
+31.5 7.4 (Grandp\350re) 31.5 53.0 (Grandm\350re)  % first names of grandparents
+35.6 53.0 (Grandm\350re Camus)  % other names
+45.7 7.4 (United States) 45.7 30.2 (1870-01-01)  % parent A of parent 2
+45.7 53.0 (Canada) 45.7 75.2 (1880-01-01) % parent B of parent 2
+51.0 7.4 (NA) 51.0 30.2 (NA)  % parent 2A citizenship info
+51.0 53.0 (unknown) 51.0 75.2 (unknown)  % parent 2B citizenship info
+55.2 7.4 (NA) 55.2 53.0 (Born in Bordertown, PEI, Canada)
+56.6 53.0 (to Canadian parents)
+65.2 24.5 (1945-01-01) 65.2 70.2 (1955-01-01)  % dates of death
+74.2 28.5 bullet  % ever lived in Canada, no
+81.7 27.3 bullet  % yes, born before 1977
+84.2 54.9 bullet  % yes, absent from Canada
+89.0 9.0 (1955-01-01) 89.0 22.2 (2026-08-04)  % dates absent from Canada
+89.0 42.8 (United States) 89.0 63.9 (Never lived in, nor visited, CA)

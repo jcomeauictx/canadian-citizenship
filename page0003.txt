@@ -8,6 +8,9 @@
 41.2 59.0 (1950-01-01) 41.2 76.4 (Border, Maine)  % parent 2 ditto
 45.2 24.5 (1980-01-01) 45.2 70.5 (1990-01-01)  % death dates
 52.9 20.7 bullet 52.9 64.5 bullet  % biological parents
-58.2 53.1 check  % parent 2 not citizen
+%58.2 53.1 check  % parent 2 not citizen
+60.7 7.5 check  60.7 53.1 check % not sure about parent citizenship statuses
 60.7 7.5 check  % not sure about parent 1 citizenship status
 64.0 10.0 (Born in United States to Canadian parents)
+64.0 55.4 (Born in United States to American father)
+65.2 55.4 (and Canadian mother)
