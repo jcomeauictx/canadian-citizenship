@@ -1,6 +1,6 @@
 15.0 7.5 (Canux) 15.0 53.1 (Canoe)  % surnames
 19.0 7.5 (P\350re) 19.0 53.1 (M\350re)  % first names
-23.1 53.1 (M\350re Maiden)  % other names
+23.1 53.1 (M\350re Canis)  % other names
 33.2 7.5 (United States) 33.2 36.0 (1920-01-01)  % parent 1 birth country/date
 33.2 53.1 (United States) 33.2 82.0 (1925-01-01)  % parent 2 ditto
 37.0 7.5 (NA) 37.0 53.1 (NA)  % Canadian birth certificate
