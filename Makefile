@@ -20,12 +20,13 @@ PRIVATE := $(HOME)/canada
 ifneq ($(SHOWENV),)
 export
 endif
-all: $(FORMPAGES) filledpages result
+all: $(FORMPAGES) result
 result: filledform.pdf
 	xpdf $<
-filledform.pdf: filledpages
-	pdfunite filledpage0*.pdf $@
-filledpages: $(INSTALLED)/seq $(FILLEDPAGES)
+filledform.pdf: $(FILLEDPAGES) | $(INSTALLED)/seq
+	pdfunite $+ $@
+testpages.pdf: $(TESTPAGES) | $(INSTALLED)/seq $(INSTALLED)/poppler-utils
+	pdfunite $+ $@
 testpage0%.pdf: test.ps prefilled0%.ps | $(INSTALLED)/ghostscript
 	gs \
 	 -dNOSAFER \
@@ -34,11 +35,9 @@ testpage0%.pdf: test.ps prefilled0%.ps | $(INSTALLED)/ghostscript
 	 -sDEVICE=pdfwrite \
 	 -sOutputFile=$@ \
 	 -- $+
-testpages.pdf: $(TESTPAGES) | $(INSTALLED)/seq $(INSTALLED)/poppler-utils
-	pdfunite $+ $@
 .SECONDEXPANSION:
 filledpage0%.pdf: formfill.ps page0%.ps \
- $$(firstword $$(wildcard $$(PRIVATE)/page$$*.txt page$$*.txt) /dev/null) | \
+ $$(firstword $$(wildcard $$(PRIVATE)/page0$$*.txt page0$$*.txt) /dev/null) | \
  $(INSTALLED)/poppler-utils $(INSTALLED)/ghostscript
 	gs \
 	 -dNOSAFER \
