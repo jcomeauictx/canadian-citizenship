@@ -1,0 +1,15 @@
+12.5 7.4 (Canux) 12.5 52.0 (Justus)  % applicant surname, first names
+16.6 7.4 (jcanux@example.com) 16.6 52.0 (jcanux@example.com)  % email
+23.0 7.4 (123 Main St)
+27.0 7.4 (Border) 27.0 45.2 (Maine) 27.0 69.2 (United States) 27.0 87.0 (04900)
+30.2 44.1 bullet  % mailing address same as above
+49.5 7.4 (207-555-1212)  % phone
+55.2 37.5 bullet  % no, nobody helping me fill this out
+57.7 40.5 bullet  % no, not paying anyone to help me
+73.7 7.4 bullet  % no, would not like to name a representative
+78.7 7.4 check  % agree to advise of changes
+81.3 7.4 check  % I understand this form
+83.6 7.4 check  % I declare this info is correct
+86.2 7.4 check  % I declare that enclosed photos are a true likeness of me
+90.0 7.4 check  % fraud will void all gains and could land me in prison
+94.2 7.4 check  % not applying for citizenship for an adopted person
