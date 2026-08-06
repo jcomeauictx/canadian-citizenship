@@ -21,12 +21,12 @@ PRIVATE := $(HOME)/canada
 ifneq ($(SHOWENV),)
 export
 endif
-all: $(INSTALLED)/poppler-utils $(INSTALLED)/seq $(FORMPAGES) result
+all: $(INSTALLED)/poppler-utils $(INSTALLED)/coreutils $(FORMPAGES) result
 result: filledform.pdf $(INSTALLED)/xpdf
 	xpdf $<
-filledform.pdf: $(FILLEDPAGES) | $(INSTALLED)/seq
+filledform.pdf: $(FILLEDPAGES) | $(INSTALLED)/coreutils
 	pdfunite $+ $@
-testpages.pdf: $(TESTPAGES) | $(INSTALLED)/seq $(INSTALLED)/poppler-utils
+testpages.pdf: $(TESTPAGES) | $(INSTALLED)/coreutils $(INSTALLED)/poppler-utils
 	pdfunite $+ $@
 testpage0%.pdf: test.ps prefilled0%.ps | $(INSTALLED)/ghostscript
 	gs \
@@ -69,10 +69,7 @@ ifeq ($(SHOWENV),)
 else
 	$@
 endif
-%/seq: %
-	sudo $(INSTALLER) $(INSTALL) coreutils
-	touch $@
-%/poppler-utils %/ghostscript %/xpdf %/xdg-utils %/w3m: | %
+$(INSTALLED)/%: | $(INSTALLED)
 	sudo $(INSTALLER) $(INSTALL) $(@F)
 	touch $@
 $(INSTALLED) $(PRIVATE):
