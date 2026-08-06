@@ -24,7 +24,8 @@ in all the following steps, replace `myusername` with your actual desired
 username.
 
 * launch a new Ubuntu or Debian droplet at digitalocean.com,
-  Basic / 1 vCPU / 512 MB RAM / 10 GB Disk, $4/month
+  Basic / 1 vCPU / 512 MB RAM / 10 GB Disk, $4/month.
+  make sure to select at least one ssh key, the one for your current machine
 * ssh in to the IP address, e.g. `ssh root@1.2.3.4`
 * `apt update; apt install make sudo xauth git`
 * `adduser myusername`, and fill in all the requested information
