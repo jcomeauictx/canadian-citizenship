@@ -2,14 +2,14 @@ CANADA := https://www.canada.ca/en
 IMMIGRATION := $(CANADA)/immigration-refugees-citizenship
 FORMS := $(IMMIGRATION)/services/application/application-forms-guides
 APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
-DOWNLOADS := $(HOME)/Downloads
+DOWNLOADS = $(word 1, $(HOME)/Downloads $(CURDIR))
 INSTALLED := .installed
 INSTALLER := $(word 1, $(shell which apt yum dnf apk 2>/dev/null))
 INSTALL := install
 ifeq ($(notdir $(INSTALLER)),apk)
 INSTALL := add
 endif
-APPLICATION := $(DOWNLOADS)/cit0001e.pdf
+APPLICATION = $(DOWNLOADS)/cit0001e.pdf
 PAGES := $(shell pdfinfo $(APPLICATION) >/dev/null 2>&1 | \
  awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
