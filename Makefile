@@ -10,7 +10,7 @@ ifeq ($(notdir $(INSTALLER)),apk)
 INSTALL := add
 endif
 APPLICATION = $(DOWNLOADS)/cit0001e.pdf
-PAGES := $(shell pdfinfo $(APPLICATION) >/dev/null 2>&1 | \
+PAGES := $(shell pdfinfo $(APPLICATION) 2>/dev/null | \
  awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
 FORMPAGES = $(shell seq -f 'page%04g.pdf' 1 $(PAGES) 2>/dev/null)
