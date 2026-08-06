@@ -32,3 +32,13 @@ the empty form to that same location and name and run the same command.
 * `git clone https://github.com/jcomeauictx/canadian-citizenship`
 * `cd canadian-citizenship`
 * `make`
+* scroll down to Paper Applications, Application for a citizenship certificate,
+  and select (click or hit ENTER)
+* download the form. It should prompt you to save cit0001e.pdf, then say
+  "Download complete"
+  * if you see the error
+    `Syntax Error: Could not extract page(s) from damaged file ('/home/myusername/src/jcomeauictx/canadian-citizenship/cit0001e.pdf')`,
+    then it wasn't decompressed on download.
+    `mv cit0001e.pdf cit0001e.pdf.gz`, then `gunzip cit0001e.pdf.gz`, and run
+    `make` again.
+* you may be prompted to download several development packages. assent to all.
