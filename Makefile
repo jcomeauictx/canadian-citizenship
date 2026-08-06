@@ -55,7 +55,7 @@ page0%.pdf: $(APPLICATION) $(INSTALLED)/poppler-utils
 	pdfseparate $< page%04d.pdf
 prefilled0%.pdf: $(PREVIOUS) $(INSTALLED)/poppler-utils
 	pdfseparate $< prefilled%04d.pdf
-$(APPLICATION): | $(INSTALLED)/xdg-utils
+$(APPLICATION): | $(INSTALLED)/xdg-utils $(INSTALLED)/w3m
 	xdg-open $(APPLY)
 	read -p '<ENTER> when form has been downloaded' done
 clean:
