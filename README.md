@@ -20,11 +20,15 @@ form using a browser, and saved the PDF, copy that to
 the empty form to that same location and name and run the same command.
 
 ## quickstart
+in all the following steps, replace `myusername` with your actual desired
+username.
+
 * launch a new Ubuntu or Debian droplet at digitalocean.com,
   Basic / 1 vCPU / 1 GB RAM / 25 GB Disk, $6/month
 * ssh in to the IP address, e.g. `ssh root@1.2.3.4`
-* `apt install make sudo xauth git`
+* `apt update; apt install make sudo xauth git`
 * `adduser myusername`, and fill in all the requested information
+* `usermod -a -G sudo myusername`
 * `cp -r .ssh ~myusername/ && chown -R myusername:myusername ~myusername/.ssh`
 * logout, and log back in as myusername: `ssh -Y myusername@1.2.3.4`,
   the `-Y` meaning to tunnel X-windows
