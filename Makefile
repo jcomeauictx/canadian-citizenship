@@ -4,24 +4,25 @@ FORMS := $(IMMIGRATION)/services/application/application-forms-guides
 APPLY := $(FORMS)/application-citizenship-certificate-adults-minors.html
 DOWNLOADS := $(HOME)/Downloads
 INSTALLED := .installed
-INSTALLER := $(shell command -v apt yum dnf apk)
+INSTALLER := $(word 1, $(shell which apt yum dnf apk 2>/dev/null))
 INSTALL := install
-ifeq ($(INSTALLER),apk)
+ifeq ($(notdir $(INSTALLER)),apk)
 INSTALL := add
 endif
 APPLICATION := $(DOWNLOADS)/cit0001e.pdf
-PAGES := $(shell pdfinfo $(APPLICATION) | awk '$$1 == "Pages:" {print $$2}')
+PAGES := $(shell pdfinfo $(APPLICATION) >/dev/null 2>&1 | \
+ awk '$$1 == "Pages:" {print $$2}')
 PREVIOUS := $(DOWNLOADS)/cit0001e_prefilled.pdf
-FORMPAGES = $(shell seq -f 'page%04g.pdf' 1 $(PAGES))
-PREFILLED = $(shell seq -f 'prefilled%04g.pdf' 1 $(PAGES))
+FORMPAGES = $(shell seq -f 'page%04g.pdf' 1 $(PAGES) 2>/dev/null)
+PREFILLED = $(shell seq -f 'prefilled%04g.pdf' 1 $(PAGES) 2>/dev/null)
 FILLEDPAGES = $(addprefix filled, $(FORMPAGES))
 TESTPAGES = $(addprefix test, $(FORMPAGES))
 PRIVATE := $(HOME)/canada
 ifneq ($(SHOWENV),)
 export
 endif
-all: $(FORMPAGES) result
-result: filledform.pdf
+all: $(INSTALLED)/poppler-utils $(INSTALLED)/seq $(FORMPAGES) result
+result: filledform.pdf $(INSTALLED)/xpdf
 	xpdf $<
 filledform.pdf: $(FILLEDPAGES) | $(INSTALLED)/seq
 	pdfunite $+ $@
@@ -68,10 +69,10 @@ ifeq ($(SHOWENV),)
 else
 	$@
 endif
-$(INSTALLED)/seq: $(INSTALLED)
+%/seq: %
 	sudo $(INSTALLER) $(INSTALL) coreutils
 	touch $@
-$(INSTALLED)/poppler-utils $(INSTALLED)/ghostscript: | $(INSTALLED)
+%/poppler-utils %/ghostscript %/xpdf: | %
 	sudo $(INSTALLER) $(INSTALL) $(@F)
 	touch $@
 $(INSTALLED) $(PRIVATE):
