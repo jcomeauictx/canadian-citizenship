@@ -72,7 +72,7 @@ endif
 %/seq: %
 	sudo $(INSTALLER) $(INSTALL) coreutils
 	touch $@
-%/poppler-utils %/ghostscript %/xpdf %/xdg-utils: | %
+%/poppler-utils %/ghostscript %/xpdf %/xdg-utils %/w3m: | %
 	sudo $(INSTALLER) $(INSTALL) $(@F)
 	touch $@
 $(INSTALLED) $(PRIVATE):
