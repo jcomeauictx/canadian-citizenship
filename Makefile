@@ -55,7 +55,7 @@ page0%.pdf: $(APPLICATION) $(INSTALLED)/poppler-utils
 	pdfseparate $< page%04d.pdf
 prefilled0%.pdf: $(PREVIOUS) $(INSTALLED)/poppler-utils
 	pdfseparate $< prefilled%04d.pdf
-$(APPLICATION):
+$(APPLICATION): | $(INSTALLED)/xdg-utils
 	xdg-open $(APPLY)
 	read -p '<ENTER> when form has been downloaded' done
 clean:
@@ -72,7 +72,7 @@ endif
 %/seq: %
 	sudo $(INSTALLER) $(INSTALL) coreutils
 	touch $@
-%/poppler-utils %/ghostscript %/xpdf: | %
+%/poppler-utils %/ghostscript %/xpdf %/xdg-utils: | %
 	sudo $(INSTALLER) $(INSTALL) $(@F)
 	touch $@
 $(INSTALLED) $(PRIVATE):
