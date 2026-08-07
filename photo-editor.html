@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canadian Citizenship Photo Prep</title>
+<style>
+  :root {
+    --red: #d52b1e;
+    --bg: #f7f7f5;
+    --panel: #ffffff;
+    --border: #d0cec9;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --ok: #2e7d32;
+    --warn: #b45309;
+    --bad: #c62828;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  header {
+    background: var(--red); color: white; padding: 14px 24px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  header h1 { font-size: 1.1rem; font-weight: normal; letter-spacing: 0.03em; }
+  header p { font-size: 0.8rem; opacity: 0.85; font-family: sans-serif; }
+  main {
+    display: grid; grid-template-columns: 1fr 300px;
+    gap: 20px; padding: 20px; max-width: 1100px; margin: 0 auto;
+  }
+  @media (max-width: 700px) { main { grid-template-columns: 1fr; } }
+  .canvas-panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 4px; padding: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  #drop-zone {
+    width: 100%; min-height: 300px; border: 2px dashed var(--border);
+    border-radius: 4px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px;
+    cursor: pointer; padding: 24px; text-align: center;
+    font-family: sans-serif; color: var(--muted);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  #drop-zone.drag-over { border-color: var(--red); background: #fff5f5; }
+  #drop-zone input { display: none; }
+  .canvas-wrap { position: relative; display: none; width: 100%; }
+  #canvas { display: block; max-width: 100%; cursor: crosshair; width: 100%; }
+  /* SVG overlay sits on top of canvas */
+  #svg-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  /* draggable crop box drawn by JS inside svg */
+  .canvas-controls {
+    display: none; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  button {
+    font-family: sans-serif; font-size: 0.85rem; padding: 7px 14px;
+    border-radius: 3px; border: 1px solid var(--border);
+    background: white; cursor: pointer; transition: background 0.15s;
+  }
+  button:hover { background: #f0f0ee; }
+  button.primary { background: var(--red); color: white; border-color: var(--red); }
+  button.primary:hover { background: #b52318; }
+  .side-panel { display: flex; flex-direction: column; gap: 16px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 4px; padding: 16px; font-family: sans-serif;
+  }
+  .card h2 {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .req-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .req-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; line-height: 1.4; }
+  .icon {
+    flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%;
+    margin-top: 2px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: white;
+  }
+  .icon.ok { background: var(--ok); }
+  .icon.warn { background: var(--warn); }
+  .icon.bad { background: var(--bad); }
+  .icon.unknown { background: var(--border); color: #333; }
+  .dimension-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.85rem; padding: 4px 0; border-bottom: 1px solid var(--border);
+  }
+  .dimension-row:last-child { border-bottom: none; }
+  .dimension-row span:last-child { color: var(--muted); }
+  /* Photo spec diagram */
+  #spec-diagram { width: 100%; max-width: 200px; margin: 0 auto; display: block; }
+</style>
+</head>
+<body>
+<header>
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 3 l1.5 4.5h3l-2.5 2 1 3.5-3-1.8-3 1.8 1-3.5-2.5-2h3z M14.5 19h3v8h-3z"/>
+  </svg>
+  <div>
+    <h1>Canadian Citizenship Photo Prep</h1>
+    <p>Crop your photo to IRCC specifications · no processing, no upload</p>
+  </div>
+</header>
+
+<main>
+  <div class="canvas-panel">
+    <div id="drop-zone">
+      <input type="file" id="file-input" accept="image/*">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      <p>Drop a photo here, or <strong>click to browse</strong></p>
+      <p style="font-size:0.78rem">JPEG or PNG · stays in your browser</p>
+    </div>
+
+    <div class="canvas-wrap" id="canvas-wrap">
+      <canvas id="canvas"></canvas>
+      <svg id="svg-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <div class="canvas-controls" id="canvas-controls">
+      <button id="btn-reset">Load new photo</button>
+      <button id="btn-detect">Auto-detect face</button>
+      <button id="btn-download" class="primary">Download 4×6 print sheet</button>
+    </div>
+  </div>
+
+  <div class="side-panel">
+    <div class="card">
+      <h2>IRCC Requirements</h2>
+      <ul class="req-list">
+        <li><span class="icon unknown" id="req-ratio-icon">?</span><span>Photo: <strong>50 × 70 mm</strong> (5∶7 ratio)</span></li>
+        <li><span class="icon unknown" id="req-head-icon">?</span><span>Head height: <strong>31–36 mm</strong> of the 70 mm frame</span></li>
+        <li><span class="icon unknown" id="req-bg-icon">?</span><span>White or light grey background</span></li>
+        <li><span class="icon ok">✓</span><span>Colour, no filters or alterations</span></li>
+        <li><span class="icon ok">✓</span><span>No glasses, no shadows on face</span></li>
+        <li><span class="icon warn">!</span><span>Taken within last 6 months — verify yourself</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Crop Info</h2>
+      <div class="dimension-row"><span>Aspect ratio</span><span id="dim-ratio">—</span></div>
+      <div class="dimension-row"><span>Crop px</span><span id="dim-px">—</span></div>
+      <div class="dimension-row"><span>Head zone</span><span id="dim-head">—</span></div>
+      <div class="dimension-row"><span>Background</span><span id="dim-bg">—</span></div>
+    </div>
+
+    <!-- Spec diagram -->
+    <div class="card">
+      <h2>Spec Diagram</h2>
+      <svg id="spec-diagram" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg"
+           font-family="sans-serif" font-size="9">
+        <!-- photo border: 100x140 centered, leaving room for labels -->
+        <rect x="40" y="8" width="100" height="140" fill="white" stroke="#333" stroke-width="1.5"/>
+        <!-- head oval: chin at 65% = y=8+91=99, head center roughly y=65 -->
+        <ellipse cx="90" cy="63" rx="28" ry="38" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- chin line at 65% of 140 = 91px from top = y=99 -->
+        <!-- max box: 36/70*140=72px, top=99-72=27, so y=8+27=35 -->
+        <!-- min box: 31/70*140=62px, top=99-62=37, so y=8+37=45 -->
+        <rect x="58" y="35" width="64" height="72" fill="none" stroke="#d52b1e" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="58" y="45" width="64" height="62" fill="none" stroke="#888" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <!-- left bracket: min 31mm -->
+        <line x1="36" y1="45" x2="36" y2="107" stroke="#555" stroke-width="0.8"/>
+        <line x1="33" y1="45" x2="39" y2="45" stroke="#555" stroke-width="0.8"/>
+        <line x1="33" y1="107" x2="39" y2="107" stroke="#555" stroke-width="0.8"/>
+        <text x="18" y="73" text-anchor="middle" fill="#333">Min.</text>
+        <text x="18" y="83" text-anchor="middle" fill="#333">31 mm</text>
+        <text x="18" y="93" text-anchor="middle" fill="#555">(1¼ in.)</text>
+        <!-- right bracket: max 36mm -->
+        <line x1="144" y1="35" x2="144" y2="107" stroke="#d52b1e" stroke-width="0.8"/>
+        <line x1="141" y1="35" x2="147" y2="35" stroke="#d52b1e" stroke-width="0.8"/>
+        <line x1="141" y1="107" x2="147" y2="107" stroke="#d52b1e" stroke-width="0.8"/>
+        <text x="163" y="68" text-anchor="middle" fill="#d52b1e">Max.</text>
+        <text x="163" y="78" text-anchor="middle" fill="#d52b1e">36 mm</text>
+        <text x="163" y="88" text-anchor="middle" fill="#d52b1e">(1⁷⁄₁₆ in.)</text>
+        <!-- right bracket: total height 70mm -->
+        <line x1="176" y1="8" x2="176" y2="148" stroke="#333" stroke-width="0.8"/>
+        <line x1="173" y1="8" x2="179" y2="8" stroke="#333" stroke-width="0.8"/>
+        <line x1="173" y1="148" x2="179" y2="148" stroke="#333" stroke-width="0.8"/>
+        <text x="191" y="75" text-anchor="middle" fill="#333" transform="rotate(90,191,75)">70 mm (2¾ in.)</text>
+        <!-- bottom arrow: width -->
+        <line x1="40" y1="158" x2="140" y2="158" stroke="#333" stroke-width="0.8"/>
+        <line x1="40" y1="155" x2="40" y2="161" stroke="#333" stroke-width="0.8"/>
+        <line x1="140" y1="155" x2="140" y2="161" stroke="#333" stroke-width="0.8"/>
+        <text x="90" y="170" text-anchor="middle" fill="#333">50 mm (2 in.)</text>
+        <!-- shoulder lines -->
+        <line x1="50" y1="148" x2="72" y2="115" stroke="#aaa" stroke-width="1"/>
+        <line x1="130" y1="148" x2="108" y2="115" stroke="#aaa" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="card" style="font-size:0.78rem; color:var(--muted); line-height:1.5;">
+      All processing happens in your browser. Nothing is uploaded.
+    </div>
+  </div>
+</main>
+
+<script>
+const dropZone   = document.getElementById('drop-zone');
+const fileInput  = document.getElementById('file-input');
+const canvas     = document.getElementById('canvas');
+const ctx        = canvas.getContext('2d');
+const canvasWrap = document.getElementById('canvas-wrap');
+const controls   = document.getElementById('canvas-controls');
+const svgNS      = 'http://www.w3.org/2000/svg';
+const overlay    = document.getElementById('svg-overlay');
+
+const TARGET_RATIO = 5 / 7;  // width:height
+
+let img = null;
+let cropRect = null;   // in canvas pixel coords
+let dragging = false;
+let startX, startY;
+
+// ── Load ──────────────────────────────────────────────
+dropZone.addEventListener('click', e => {
+  if (e.target !== fileInput) fileInput.click();
+});
+fileInput.addEventListener('change', e => {
+  if (e.target.files[0]) loadFile(e.target.files[0]);
+});
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+});
+
+function loadFile(file) {
+  if (!file.type.startsWith('image/')) return;
+  const url = URL.createObjectURL(file);
+  img = new Image();
+  img.onload = () => {
+    canvas.width  = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);
+    dropZone.style.display  = 'none';
+    canvasWrap.style.display = 'block';
+    controls.style.display  = 'flex';
+    setDefaultCrop();
+  };
+  img.src = url;
+}
+
+// ── Default crop: largest 5:7 centered ───────────────
+function setDefaultCrop() {
+  const w = canvas.width, h = canvas.height;
+  let cw, ch;
+  if (w / h > TARGET_RATIO) { ch = h * 0.92; cw = ch * TARGET_RATIO; }
+  else                       { cw = w * 0.92; ch = cw / TARGET_RATIO; }
+  cropRect = { x: (w - cw) / 2, y: (h - ch) / 2, w: cw, h: ch };
+  renderOverlay();
+  updateInfo();
+}
+
+// ── SVG overlay ───────────────────────────────────────
+function renderOverlay() {
+  overlay.innerHTML = '';
+  if (!cropRect) return;
+
+  const cw = canvas.offsetWidth  || canvas.width;
+  const ch = canvas.offsetHeight || canvas.height;
+  const sw = canvas.width;
+  const sh = canvas.height;
+  const scaleX = cw / sw;
+  const scaleY = ch / sh;
+
+  const ox = cropRect.x * scaleX;
+  const oy = cropRect.y * scaleY;
+  const ow = cropRect.w * scaleX;
+  const oh = cropRect.h * scaleY;
+
+  overlay.setAttribute('viewBox', `0 0 ${cw} ${ch}`);
+
+  // dim outside crop
+  const mask = `M0 0 H${cw} V${ch} H0 Z M${ox} ${oy} H${ox+ow} V${oy+oh} H${ox} Z`;
+  const dimRect = document.createElementNS(svgNS, 'path');
+  dimRect.setAttribute('d', mask);
+  dimRect.setAttribute('fill', 'rgba(0,0,0,0.45)');
+  dimRect.setAttribute('fill-rule', 'evenodd');
+  overlay.appendChild(dimRect);
+
+  // crop border
+  const border = document.createElementNS(svgNS, 'rect');
+  border.setAttribute('x', ox); border.setAttribute('y', oy);
+  border.setAttribute('width', ow); border.setAttribute('height', oh);
+  border.setAttribute('fill', 'none');
+  border.setAttribute('stroke', '#ffffff');
+  border.setAttribute('stroke-width', '1.5');
+  overlay.appendChild(border);
+
+  // head zone: chin sits at ~65% down the frame per the spec diagram
+  const minH = oh * (31/70);
+  const maxH = oh * (36/70);
+  const chinY = oy + oh * 0.65;
+  const headTop_min = chinY - minH;
+  const headTop_max = chinY - maxH;
+  const headW = ow * 0.72;
+  const headX = ox + (ow - headW) / 2;
+
+  // max head zone (outer dashed red)
+  const maxBox = document.createElementNS(svgNS, 'rect');
+  maxBox.setAttribute('x', headX);
+  maxBox.setAttribute('y', headTop_max);
+  maxBox.setAttribute('width', headW);
+  maxBox.setAttribute('height', maxH);
+  maxBox.setAttribute('fill', 'none');
+  maxBox.setAttribute('stroke', '#ff4444');
+  maxBox.setAttribute('stroke-width', '1');
+  maxBox.setAttribute('stroke-dasharray', '4,3');
+  overlay.appendChild(maxBox);
+
+  // min head zone (inner dashed yellow)
+  const minBox = document.createElementNS(svgNS, 'rect');
+  minBox.setAttribute('x', headX);
+  minBox.setAttribute('y', headTop_min);
+  minBox.setAttribute('width', headW);
+  minBox.setAttribute('height', minH);
+  minBox.setAttribute('fill', 'none');
+  minBox.setAttribute('stroke', '#ffdd00');
+  minBox.setAttribute('stroke-width', '1');
+  minBox.setAttribute('stroke-dasharray', '4,3');
+  overlay.appendChild(minBox);
+
+  // labels with white backing for readability
+  function label(x, y, text, color) {
+    const fs = Math.max(11, ow * 0.045);
+    ['white', color].forEach((fill, i) => {
+      const t = document.createElementNS(svgNS, 'text');
+      t.setAttribute('x', x); t.setAttribute('y', y);
+      t.setAttribute('fill', fill);
+      t.setAttribute('font-family', 'sans-serif');
+      t.setAttribute('font-size', fs);
+      t.setAttribute('font-weight', 'bold');
+      t.setAttribute('text-anchor', 'middle');
+      if (i === 0) { t.setAttribute('stroke', 'white'); t.setAttribute('stroke-width', '3'); }
+      t.textContent = text;
+      overlay.appendChild(t);
+    });
+  }
+
+  label(ox + ow / 2, headTop_max - 6, 'max 36 mm', '#ff4444');
+  label(ox + ow / 2, headTop_min - 6, 'min 31 mm', '#bbaa00');
+
+  // corner handles
+  [[ox,oy],[ox+ow,oy],[ox,oy+oh],[ox+ow,oy+oh]].forEach(([hx,hy]) => {
+    const c = document.createElementNS(svgNS, 'circle');
+    c.setAttribute('cx', hx); c.setAttribute('cy', hy);
+    c.setAttribute('r', 5);
+    c.setAttribute('fill', 'white');
+    c.setAttribute('stroke', '#d52b1e');
+    c.setAttribute('stroke-width', '1.5');
+    overlay.appendChild(c);
+  });
+}
+
+// ── Drag to draw new crop ─────────────────────────────
+canvas.addEventListener('mousedown', e => {
+  dragging = true;
+  const p = canvasPt(e);
+  startX = p.x; startY = p.y;
+});
+
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const p = canvasPt(e);
+  let dx = p.x - startX, dy = p.y - startY;
+  if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+  // lock ratio
+  const sign = (dx >= 0 ? 1 : -1);
+  dy = Math.abs(dx) / TARGET_RATIO * (dy >= 0 ? 1 : -1);
+  cropRect = {
+    x: sign >= 0 ? startX : startX + dx,
+    y: dy >= 0  ? startY  : startY + dy,
+    w: Math.abs(dx),
+    h: Math.abs(dy)
+  };
+  renderOverlay();
+  updateInfo();
+});
+
+window.addEventListener('mouseup', () => { dragging = false; });
+
+function canvasPt(e) {
+  const r = canvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - r.left) * (canvas.width  / r.width),
+    y: (e.clientY - r.top)  * (canvas.height / r.height)
+  };
+}
+
+// ── Buttons ───────────────────────────────────────────
+document.getElementById('btn-reset').addEventListener('click', () => {
+  dropZone.style.display   = 'flex';
+  canvasWrap.style.display = 'none';
+  controls.style.display   = 'none';
+  overlay.innerHTML = '';
+  cropRect = null; img = null;
+  fileInput.value = '';
+  resetInfo();
+});
+
+document.getElementById('btn-detect').addEventListener('click', async () => {
+  if (!('FaceDetector' in window)) {
+    alert('Face Detection API not available in this browser.\nTry Chrome on Android or macOS.');
+    return;
+  }
+  try {
+    const fd = new FaceDetector();
+    const faces = await fd.detect(canvas);
+    if (!faces.length) { alert('No face detected — try adjusting the crop manually.'); return; }
+    const f = faces[0].boundingBox;
+    const totalH = f.height / 0.47;
+    const totalW = totalH * TARGET_RATIO;
+    cropRect = {
+      x: Math.max(0, f.x + f.width/2 - totalW/2),
+      y: Math.max(0, f.y - totalH * 0.10),
+      w: totalW, h: totalH
+    };
+    renderOverlay();
+    updateInfo();
+  } catch(err) { alert('Detection failed: ' + err.message); }
+});
+
+document.getElementById('btn-download').addEventListener('click', () => {
+  if (!cropRect) return;
+
+  // 4x6 inch sheet at 600dpi
+  const DPI = 600;
+  const sheetW = 4 * DPI;   // 2400px
+  const sheetH = 6 * DPI;   // 3600px
+
+  // each photo: 50mm x 70mm = ~1.969" x 2.756"
+  const photoW = Math.round(50 / 25.4 * DPI);  // 1181px
+  const photoH = Math.round(70 / 25.4 * DPI);  // 1654px
+
+  // 2 columns, 2 rows = 4 photos
+  // total photos width: 2 * 1181 = 2362 — fits in 2400 with 38px (0.064") gap/margin
+  // total photos height: 2 * 1654 = 3308 — fits in 3600 with 292px leftover → put at top
+  const cols = 2, rows = 2;
+  const gapX = Math.floor((sheetW - cols * photoW) / (cols + 1));  // even gaps between+around
+  const totalPhotoH = rows * photoH;
+  const leftoverH = sheetH - totalPhotoH;
+  const topPad = leftoverH;   // all leftover space at top
+  const gapY = 0;             // photos touch vertically (space is at top only)
+
+  const out = document.createElement('canvas');
+  out.width  = sheetW;
+  out.height = sheetH;
+  const octx = out.getContext('2d');
+
+  // white background
+  octx.fillStyle = '#ffffff';
+  octx.fillRect(0, 0, sheetW, sheetH);
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const dx = gapX + col * (photoW + gapX);
+      const dy = topPad + row * photoH;
+      octx.drawImage(
+        canvas,
+        cropRect.x, cropRect.y, cropRect.w, cropRect.h,
+        dx, dy, photoW, photoH
+      );
+    }
+  }
+
+  const a = document.createElement('a');
+  a.download = 'citizenship-photos-4x6.jpg';
+  a.href = out.toDataURL('image/jpeg', 0.95);
+  a.click();
+});
+
+// ── Info panel ────────────────────────────────────────
+function updateInfo() {
+  if (!cropRect) return;
+  const ratio = cropRect.w / cropRect.h;
+  document.getElementById('dim-ratio').textContent =
+    ratio.toFixed(3) + (Math.abs(ratio - TARGET_RATIO) < 0.01 ? ' ✓' : '');
+  document.getElementById('dim-px').textContent =
+    Math.round(cropRect.w) + ' × ' + Math.round(cropRect.h);
+
+  // head zone guidance
+  const minPx = cropRect.h * (31/70);
+  const maxPx = cropRect.h * (36/70);
+  document.getElementById('dim-head').textContent =
+    Math.round(minPx) + '–' + Math.round(maxPx) + ' px tall';
+
+  document.getElementById('req-ratio-icon').className = 'icon ok';
+  document.getElementById('req-ratio-icon').textContent = '✓';
+
+  checkBg();
+}
+
+function checkBg() {
+  if (!cropRect) return;
+  // sample top-left and top-right corners of crop
+  const s = 30;
+  let total = 0, count = 0;
+  [[cropRect.x, cropRect.y], [cropRect.x + cropRect.w - s, cropRect.y]].forEach(([x,y]) => {
+    const d = ctx.getImageData(Math.round(x), Math.round(y), s, s).data;
+    for (let i = 0; i < d.length; i += 4) { total += (d[i]+d[i+1]+d[i+2])/3; count++; }
+  });
+  const avg = total / count;
+  const icon = document.getElementById('req-bg-icon');
+  const el   = document.getElementById('dim-bg');
+  if (avg > 210)      { icon.className='icon ok';   icon.textContent='✓'; el.textContent='Light ✓'; }
+  else if (avg > 160) { icon.className='icon warn';  icon.textContent='!'; el.textContent='Medium — check'; }
+  else                { icon.className='icon bad';   icon.textContent='✗'; el.textContent='Too dark'; }
+}
+
+function resetInfo() {
+  ['dim-ratio','dim-px','dim-head','dim-bg'].forEach(id => document.getElementById(id).textContent = '—');
+  ['req-ratio-icon','req-head-icon','req-bg-icon'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className='icon unknown'; el.textContent='?';
+  });
+}
+
+window.addEventListener('resize', () => { if (cropRect) renderOverlay(); });
+</script>
+</body>
+</html>
