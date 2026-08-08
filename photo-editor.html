@@ -125,7 +125,7 @@
     <div class="canvas-controls" id="canvas-controls">
       <button id="btn-reset">Load new photo</button>
       <button id="btn-detect">Auto-detect face</button>
-      <button id="btn-download" class="primary">Download cropped photo</button>
+      <button id="btn-download" class="primary">Download 4×6 print sheet</button>
     </div>
   </div>
 
@@ -430,16 +430,49 @@ document.getElementById('btn-detect').addEventListener('click', async () => {
 
 document.getElementById('btn-download').addEventListener('click', () => {
   if (!cropRect) return;
+
+  // 4x6 inch sheet at 600dpi
+  const DPI = 600;
+  const sheetW = 4 * DPI;   // 2400px
+  const sheetH = 6 * DPI;   // 3600px
+
+  // each photo: 50mm x 70mm = ~1.969" x 2.756"
+  const photoW = Math.round(50 / 25.4 * DPI);  // 1181px
+  const photoH = Math.round(70 / 25.4 * DPI);  // 1654px
+
+  // 2 columns, 2 rows = 4 photos
+  // total photos width: 2 * 1181 = 2362 — fits in 2400 with 38px (0.064") gap/margin
+  // total photos height: 2 * 1654 = 3308 — fits in 3600 with 292px leftover → put at top
+  const cols = 2, rows = 2;
+  const gapX = Math.floor((sheetW - cols * photoW) / (cols + 1));  // even gaps between+around
+  const totalPhotoH = rows * photoH;
+  const leftoverH = sheetH - totalPhotoH;
+  const topPad = leftoverH;   // all leftover space at top
+  const gapY = 0;             // photos touch vertically (space is at top only)
+
   const out = document.createElement('canvas');
-  // output at ~600dpi equivalent for 50x70mm: 50/25.4*600 ≈ 1181 x 1654
-  out.width  = 1181;
-  out.height = 1654;
+  out.width  = sheetW;
+  out.height = sheetH;
   const octx = out.getContext('2d');
-  octx.drawImage(canvas,
-    cropRect.x, cropRect.y, cropRect.w, cropRect.h,
-    0, 0, out.width, out.height);
+
+  // white background
+  octx.fillStyle = '#ffffff';
+  octx.fillRect(0, 0, sheetW, sheetH);
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const dx = gapX + col * (photoW + gapX);
+      const dy = topPad + row * photoH;
+      octx.drawImage(
+        canvas,
+        cropRect.x, cropRect.y, cropRect.w, cropRect.h,
+        dx, dy, photoW, photoH
+      );
+    }
+  }
+
   const a = document.createElement('a');
-  a.download = 'citizenship-photo.jpg';
+  a.download = 'citizenship-photos-4x6.jpg';
   a.href = out.toDataURL('image/jpeg', 0.95);
   a.click();
 });
