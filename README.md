@@ -1,4 +1,10 @@
 # canadian-citizenship
+**Note**: After re-reading the instructions, the PDF form must either be filled
+in directly (e.g. using Adobe products or a compliant browser) or by hand.
+Doing it using this software will be unlikely to be accepted.
+
+Original README follows.
+
 Since "saving" the form doesn't actually save your modifications in any
 meaningful sense---only in the browser window, and is lost if closed---this
 little project will allow you to save your changes in plain text files, which
