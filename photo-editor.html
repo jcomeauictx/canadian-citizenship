@@ -441,14 +441,11 @@ document.getElementById('btn-download').addEventListener('click', () => {
   const photoH = Math.round(70 / 25.4 * DPI);  // 1654px
 
   // 2 columns, 2 rows = 4 photos
-  // total photos width: 2 * 1181 = 2362 — fits in 2400 with 38px (0.064") gap/margin
-  // total photos height: 2 * 1654 = 3308 — fits in 3600 with 292px leftover → put at top
   const cols = 2, rows = 2;
   const gapX = Math.floor((sheetW - cols * photoW) / (cols + 1));  // even gaps between+around
-  const totalPhotoH = rows * photoH;
-  const leftoverH = sheetH - totalPhotoH;
-  const topPad = leftoverH;   // all leftover space at top
-  const gapY = 0;             // photos touch vertically (space is at top only)
+  const gapY = Math.round(1 / 25.4 * DPI);  // 1mm between rows
+  const totalPhotoH = rows * photoH + gapY;
+  const topPad = Math.floor((sheetH - totalPhotoH) / 2);  // equal top and bottom
 
   const out = document.createElement('canvas');
   out.width  = sheetW;
@@ -462,7 +459,7 @@ document.getElementById('btn-download').addEventListener('click', () => {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       const dx = gapX + col * (photoW + gapX);
-      const dy = topPad + row * photoH;
+      const dy = topPad + row * (photoH + gapY);
       octx.drawImage(
         canvas,
         cropRect.x, cropRect.y, cropRect.w, cropRect.h,
