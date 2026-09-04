@@ -3,7 +3,7 @@
 in directly (e.g. using Adobe products or a compliant browser) or by hand.
 Doing it using this software will be unlikely to be accepted.
 
-To download census, birth, immigration, and other records from NARA, visit <https://cataglog.archives.gov/> and enter the name into the search bar. I had best luck with last name first, in quotes, e.g. "comeau fidele": the quotes serve to "AND" the terms, whereas unquoted the terms are ORed.
+To download census, birth, immigration, and other records from NARA, visit <https://catalog.archives.gov/> and enter the name into the search bar. I had best luck with last name first, in quotes, e.g. "comeau fidele": the quotes serve to "AND" the terms, whereas unquoted the terms are ORed.
 
 Original README follows.
 
